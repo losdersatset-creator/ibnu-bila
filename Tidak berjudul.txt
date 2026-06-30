@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mini Mission Buat Kamu</title>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #fbeee6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #4a3b32;
+            overflow-x: hidden;
+        }
+        .container {
+            background-color: #ffffff;
+            width: 90%;
+            max-width: 400px;
+            padding: 30px 20px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            text-align: center;
+            position: relative;
+            border: 1px solid #f3dcd4;
+        }
+        /* Dekorasi Bunga/Estetik Ringan */
+        .container::before {
+            content: '🌸';
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            font-size: 20px;
+        }
+        .container::after {
+            content: '🌹';
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+            font-size: 20px;
+        }
+        .step {
+            display: none;
+        }
+        .step.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        h1, h2 {
+            font-family: 'Caveat', cursive;
+            color: #b05b67;
+            margin-bottom: 15px;
+        }
+        h1 { font-size: 2.5rem; }
+        h2 { font-size: 2rem; }
+        p {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            color: #615249;
+        }
+        .meta-text {
+            font-size: 0.8rem;
+            color: #b05b67;
+            font-style: italic;
+            margin-bottom: 5px;
+        }
+        /* Gaya Tombol */
+        button {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            font-family: 'Poppins', sans-serif;
+        }
+        .btn-primary {
+            background-color: #b05b67;
+            color: white;
+            box-shadow: 0 4px 10px rgba(176, 91, 103, 0.3);
+        }
+        .btn-primary:hover {
+            background-color: #934651;
+        }
+        .btn-secondary {
+            background-color: #f3dcd4;
+            color: #b05b67;
+            margin-left: 10px;
+        }
+        .btn-group {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        /* Scanner Section */
+        .scan-heart {
+            font-size: 70px;
+            cursor: pointer;
+            user-select: none;
+            display: inline-block;
+            margin: 20px 0;
+            transition: transform 0.2s;
+        }
+        .scan-heart.scanning {
+            animation: pulse 1s infinite alternate;
+        }
+        @keyframes pulse {
+            from { transform: scale(1); }
+            to { transform: scale(1.2); }
+        }
+        /* Certificate Section */
+        .certificate {
+            border: 2px dashed #b05b67;
+            padding: 20px 15px;
+            border-radius: 15px;
+            background-color: #fff9f9;
+            margin-bottom: 20px;
+        }
+        .sub-text {
+            font-size: 0.85rem;
+            color: #88746a;
+        }
+        .alert-text {
+            color: #d9534f;
+            font-weight: bold;
+            font-size: 0.85rem;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    
+    <div id="step1" class="step active">
+        <div class="meta-text">dari Dimas</div>
+        <h2>hehe ini agak serius, baca ampe abis ya nora</h2>
+        <p>Syukurnya si kita makin deket dan makin kenal. Setelah tau banyak sisi lain darimu yang sebelumnya tidak aku ketahui, aku malah makin suka denganmu. karena itu...</p>
+        <button class="btn-primary" onclick="nextStep(2)">Oke, lanjut</button>
+    </div>
+
+    <div id="step2" class="step">
+        <div class="meta-text">mini mission buat Nora</div>
+        <h1>mau ga jadi MBGku?</h1>
+        <p id="rejection-text" style="min-height: 24px; color: #b05b67; font-weight: bold;"></p>
+        <div class="btn-group">
+            <button class="btn-primary" onclick="nextStep(3)">mau banget</button>
+            <button id="rejectBtn" class="btn-secondary" onclick="handleRejection()">dih gamau</button>
+        </div>
+    </div>
+
+    <div id="step3" class="step">
+        <div class="meta-text">FINAL CHECK</div>
+        <h2>scan dulu biar sah</h2>
+        <p class="sub-text">Jawaban Nora masuk ruang pemeriksaan. Kalau cahayanya selesai, sertifikatnya langsung keluar.</p>
+        
+        <div id="heartIcon" class="scan-heart" onclick="startScan()">💖</div>
+        <p id="scanStatus" style="font-weight: 600;">TAP TO SCAN</p>
+    </div>
+
+    <div id="step4" class="step">
+        <div class="meta-text">hasil scan: valid</div>
+        <h1>Sertifikat jadi kita</h1>
+        
+        <div class="certificate">
+            <p>Dengan ini kita resmi jadi pasangan. Masing-masing dari kita janji akan setia dan tidak ada yang selingkuh ya! Dimas janji akan bikin hari-hari Nora terasa bahagia.</p>
+            <div class="meta-text" style="margin-top: 15px;">Dari Dimas, buat Nora. Simpan baik-baik ya.</div>
+        </div>
+
+        <p class="alert-text">📸 Screenshot ini, terus kirim ke Dimas.</p>
+        <button class="btn-primary" onclick="location.reload()">Ulangi dari awal</button>
+    </div>
+
+</div>
+
+<script>
+    // Fungsi pindah halaman/step
+    function nextStep(currentStep) {
+        document.querySelectorAll('.step').forEach(step => step.classList.remove('active'));
+        document.getElementById('step' + currentStep).classList.add('active');
+    }
+
+    // List teks sindiran lucu pas tombol "dih gamau" diklik
+    const rejectTexts = [
+        "apa? ga kedengeran jawaban kamu",
+        "kayanya ada yang error deh",
+        "gadengerr, kamu bilang apaa",
+        "apaaaa noraaaaaaaaaaa"
+    ];
+    let rejectCount = 0;
+
+    function handleRejection() {
+        const textElement = document.getElementById('rejection-text');
+        if (rejectCount < rejectTexts.length) {
+            textElement.innerText = rejectTexts[rejectCount];
+            rejectCount++;
+        } else {
+            textElement.innerText = "Yeee ga bisa! Harus mau pokoknya! 😜";
+        }
+        
+        // Bonus efek: memperkecil ukuran tombol "dih gamau" biar makin susah diklik
+        const rejectBtn = document.getElementById('rejectBtn');
+        let currentSize = parseFloat(window.getComputedStyle(rejectBtn).fontSize);
+        if (currentSize > 8) {
+            rejectBtn.style.fontSize = (currentSize - 2) + 'px';
+            rejectBtn.style.padding = '8px 15px';
+        }
+    }
+
+    // Fungsi simulasi loading Scan Hati
+    function startScan() {
+        const heart = document.getElementById('heartIcon');
+        const status = document.getElementById('scanStatus');
+        
+        // Kunci biar ga diklik dua kali
+        heart.onclick = null; 
+        heart.classList.add('scanning');
+        status.innerText = "SCANNING...";
+
+        // Step text animasi scanning ala video
+        setTimeout(() => { status.innerText = "mengecek kadar salting..."; }, 1500);
+        setTimeout(() => { status.innerText = "hampir selesai..."; }, 3500);
+        
+        // Pindah ke halaman sertifikat setelah 5 detik
+        setTimeout(() => {
+            nextStep(4);
+        }, 5000);
+    }
+</script>
+
+</body>
+</html>
